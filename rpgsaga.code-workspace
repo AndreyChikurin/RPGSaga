@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "RpgSaga"
+		},
+		{
+			"path": "RpgSaga.Tests"
+		},
+		{
+            "name": "Configs (Root)",
+            "path": "."
+        },
+	],
+	"settings": {}
+}
