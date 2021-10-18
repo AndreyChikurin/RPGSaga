@@ -1,6 +1,6 @@
 ﻿namespace RpgSaga.Players
 {
-    public class CreatePlayers
+    public class PlayersCreator
     {
         public static Player NewPlayer1()
         {
