@@ -2,12 +2,12 @@
 {
     public class PlayersCreator
     {
-        public Player NewPlayer1()
+        public static Player NewPlayer1()
         {
             return new Mage { Name = "Oruma", Hp = 20, Strength = 3 };
         }
 
-        public Player NewPlayer2()
+        public static Player NewPlayer2()
         {
             return new Warrior { Name = "Hrago", Hp = 30, Strength = 2 };
         }

@@ -5,7 +5,7 @@
 
     public class Game
     {
-        public static void RunGame()
+        public void RunGame()
         {
             Player p1 = PlayersCreator.NewPlayer1();
             Player p2 = PlayersCreator.NewPlayer2();
@@ -23,13 +23,13 @@
             Winner(p1, p2);
         }
 
-        private static void PlayerMove(Player attacker, Player defender)
+        private void PlayerMove(Player attacker, Player defender)
         {
             defender.Hp -= attacker.Strength;
             Console.WriteLine(attacker.GetType().Name + " " + attacker.Name + $" deals {attacker.Strength} damage to the " + defender.GetType().Name + " " + defender.Name + $"({defender.Hp}Hp)");
         }
 
-        private static void Winner(Player p1, Player p2)
+        private void Winner(Player p1, Player p2)
         {
             Console.WriteLine();
 

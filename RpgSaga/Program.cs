@@ -6,7 +6,8 @@
     {
         public static void Main(string[] args)
         {
-            Game.RunGame();
+            var game = new Game();
+            game.RunGame();
         }
     }
 }
