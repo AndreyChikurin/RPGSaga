@@ -33,14 +33,14 @@
         {
             Console.WriteLine();
 
+            var winner = p1;
+
             if (p2.Hp > 0)
             {
-                var a = p1;
-                p1 = p2;
-                p2 = a;
+                winner = p2;
             }
 
-            Console.WriteLine("The " + p1.GetType().Name + " " + p1.Name + " won");
+            Console.WriteLine("The " + winner.GetType().Name + " " + winner.Name + " won");
         }
     }
 }
