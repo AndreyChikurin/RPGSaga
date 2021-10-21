@@ -13,7 +13,7 @@
             Name = name;
             Skills = skills;
             Effects = new List<IEffect>();
-            IsCurrentRoundFinished = true;
+            IsCurrentRoundFinished = false;
         }
 
         public int Strength { get; set; }
