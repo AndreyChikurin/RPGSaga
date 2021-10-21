@@ -28,5 +28,11 @@
         public List<IEffect> Effects { get; set; }
 
         public List<ISkill> Skills { get; set; }
+
+        public void Reset()
+        {
+            this.Hp = MaxHp;
+            this.Effects.Clear();
+        }
     }
 }
