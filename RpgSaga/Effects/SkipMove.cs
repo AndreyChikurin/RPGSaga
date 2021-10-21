@@ -9,6 +9,11 @@
 
         public void EffectAction(Player player)
         {
+            if (Duration > 0)
+            {
+            }
+
+            Duration--;
         }
     }
 }

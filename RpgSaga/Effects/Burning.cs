@@ -5,14 +5,11 @@
 
     public class Burning : IEffect
     {
-        public int Duration { get => Duration; set => Duration = 10; }
+        public int Duration { get => Duration; set => Duration = 1; }
 
         public void EffectAction(Player player)
         {
-            if (Duration > 0)
-            {
-                player.Hp -= 2;
-            }
+            player.Hp -= 2;
         }
     }
 }
