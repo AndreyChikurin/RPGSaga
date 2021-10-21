@@ -8,6 +8,7 @@
         public Player(int strength, int hp, string name, List<ISkill> skills)
         {
             Strength = strength;
+            MaxHp = hp;
             Hp = hp;
             Name = name;
             Skills = skills;
