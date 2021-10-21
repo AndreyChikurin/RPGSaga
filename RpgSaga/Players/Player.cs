@@ -7,12 +7,12 @@
     {
         public Player(int strength, int hp, string name, List<ISkill> skills)
         {
-            this.Strength = strength;
-            this.Hp = hp;
-            this.Name = name;
-            this.Skills = skills;
-            this.Effects = new List<IEffect>();
-            this.IsCurrentRoundFinished = true;
+            Strength = strength;
+            Hp = hp;
+            Name = name;
+            Skills = skills;
+            Effects = new List<IEffect>();
+            IsCurrentRoundFinished = true;
         }
 
         public int Strength { get; set; }
@@ -31,8 +31,8 @@
 
         public void Reset()
         {
-            this.Hp = MaxHp;
-            this.Effects.Clear();
+            Hp = MaxHp;
+            Effects.Clear();
         }
     }
 }
