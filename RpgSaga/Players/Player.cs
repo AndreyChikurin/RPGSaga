@@ -5,11 +5,11 @@
 
     public abstract class Player
     {
-        public Player(int strength, int hp, string name, List<ISkill> skills)
+        public Player(int strength, int maxHp, string name, List<ISkill> skills)
         {
             Strength = strength;
-            MaxHp = hp;
-            Hp = hp;
+            MaxHp = maxHp;
+            Hp = maxHp;
             Name = name;
             Skills = skills;
             Effects = new List<IEffect>();
@@ -20,7 +20,7 @@
 
         public int Hp { get; set; }
 
-        public int MaxHp { get; set; }
+        public int MaxHp { get; private set; }
 
         public string Name { get; set; }
 
@@ -34,6 +34,7 @@
         {
             Hp = MaxHp;
             Effects.Clear();
+            IsCurrentRoundFinished = false;
         }
     }
 }
