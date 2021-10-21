@@ -5,8 +5,8 @@
 
     public class Hunter : Player
     {
-        public Hunter(int strength, int hp, string name, List<ISkill> skills)
-            : base(strength, hp, name, skills)
+        public Hunter(int strength, int maxHp, string name, List<ISkill> skills)
+            : base(strength, maxHp, name, skills)
         {
         }
     }

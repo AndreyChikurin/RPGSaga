@@ -5,8 +5,8 @@
 
     public class Mage : Player
     {
-        public Mage(int strength, int hp, string name, List<ISkill> skills)
-            : base(strength, hp, name, skills)
+        public Mage(int strength, int maxHp, string name, List<ISkill> skills)
+            : base(strength, maxHp, name, skills)
         {
         }
     }
