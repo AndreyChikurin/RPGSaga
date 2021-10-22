@@ -1,6 +1,7 @@
 ﻿namespace RpgSaga.Effects
 {
     using RpgSaga.Interfaces;
+    using RpgSaga.Logger;
     using RpgSaga.Players;
 
     public class SkipMove : IEffect
@@ -13,6 +14,8 @@
             {
                 player.Effects.Remove(new SkipMove());
             }
+
+            Logger.EffectLog(player, "SkipMove");
 
             Duration--;
         }

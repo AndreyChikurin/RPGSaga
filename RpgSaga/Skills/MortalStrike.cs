@@ -2,6 +2,7 @@
 {
     using System;
     using RpgSaga.Interfaces;
+    using RpgSaga.Logger;
     using RpgSaga.Players;
 
     public class MortalStrike : ISkill
@@ -10,7 +11,10 @@
 
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {
-            targetPlayer.Hp -= (int)Math.Round(soursePlayer.Strength * damageCoefficient);
+            int damage = (int)Math.Round(soursePlayer.Strength * damageCoefficient);
+            targetPlayer.Hp -= damage;
+
+            Logger.SkillLog(soursePlayer, targetPlayer, $"MortalStrike and deal {damage}");
         }
     }
 }
