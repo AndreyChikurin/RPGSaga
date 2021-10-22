@@ -9,8 +9,9 @@
 
         public void EffectAction(Player player)
         {
-            if (Duration > 0)
+            if (Duration == 0)
             {
+                player.Effects.Remove(new SkipMove());
             }
 
             Duration--;
