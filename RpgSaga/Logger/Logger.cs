@@ -17,7 +17,7 @@
 
         public static void SkillLog(Player soursePlayer, Player targetPlayer, string skillName)
         {
-            Console.WriteLine(soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name + $" {message}");
+            Console.WriteLine(soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name);
         }
 
         public static void WinnerLog(Player winner)
