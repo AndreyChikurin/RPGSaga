@@ -15,7 +15,7 @@
         public LoggerForFile(string filePath)
         {
             _filePath = filePath;
-            path = Path.Combine($"{_filePath}", $"Log#{DateTime.Now.ToString("dd.MM.yyyy")}.txt");
+            path = Path.Combine($@"{_filePath}/{fileName}", $"Log#{DateTime.Now.ToString("dd.MM.yyyy")}.txt");
         }
 
         public void EffectLog(Player player, string effectName)
