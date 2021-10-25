@@ -23,12 +23,6 @@
             Players = new List<Player>();
         }
 
-        public enum LogType
-        {
-            LogConsole,
-            LogFile,
-        }
-
         public List<Player> Players { get; set; }
 
         public Round CurrentRound { get; set; }
@@ -97,4 +91,10 @@
             CurrentWinner();
         }
     }
+}
+
+public enum LogType
+{
+    LogConsole,
+    LogFile,
 }
