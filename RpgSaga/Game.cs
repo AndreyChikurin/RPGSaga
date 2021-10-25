@@ -12,12 +12,14 @@
     {
         private const int NumberOfPlayerTypes = 3;
 
+        private int _numberOfPlayers;
+
         private ILogger _logger;
 
-        public Game(LogType log)
+        public Game(LogType log, int numberOfPlayers)
         {
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
-
+            _numberOfPlayers = numberOfPlayers;
             Players = new List<Player>();
         }
 
@@ -31,15 +33,13 @@
 
         public Round CurrentRound { get; set; }
 
-        public int NumberOfPlayers { get; set; }
-
         public void Filling()
         {
             Random random = new Random();
 
-            Players = new List<Player>(NumberOfPlayers);
+            Players = new List<Player>(_numberOfPlayers);
 
-            for (int i = 0; i < NumberOfPlayers; i++)
+            for (int i = 0; i < _numberOfPlayers - 1; i++)
             {
                 switch (random.Next(0, NumberOfPlayerTypes))
                 {
