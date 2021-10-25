@@ -9,12 +9,7 @@
     using RpgSaga.Players;
     using RpgSaga.Rounds;
     using RpgSaga.Skills;
-
-    public enum LogType
-    {
-        LogConsole,
-        LogFile,
-    }
+    using static RpgSaga.Consts.LogTypes;
 
     public class Game
     {
