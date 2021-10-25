@@ -18,11 +18,15 @@
 
         private ILogger _logger;
 
+        private List<Player> _players;
+
+        private Round _currentRound;
+
         public Game(LogType log, int numberOfPlayers)
         {
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
             _numberOfPlayers = numberOfPlayers;
-            Players = new List<Player>();
+            _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
@@ -32,15 +36,18 @@
             LogFile,
         }
 
-        private List<Player> Players { get; set; }
+        public void Start()
+        {
+            Filling();
+            Tournament();
+            CurrentWinner();
+        }
 
-        private Round CurrentRound { get; set; }
-
-        public void Filling()
+        private void Filling()
         {
             Random random = new Random();
 
-            Players = new List<Player>(_numberOfPlayers);
+            _players = new List<Player>(_numberOfPlayers);
 
             for (int i = 0; i < _numberOfPlayers - 1; i++)
             {
@@ -48,7 +55,7 @@
                 {
                     case 0:
                         {
-                            Players.Add(new Hunter(
+                            _players.Add(new Hunter(
                                 random.Next(50, 70),
                                 random.Next(4, 7),
                                 PlayerNames.Hunter[random.Next(0, PlayerNames.Hunter.Length)],
@@ -58,7 +65,7 @@
 
                     case 1:
                         {
-                            Players.Add(new Warrior(
+                            _players.Add(new Warrior(
                                 random.Next(50, 70),
                                 random.Next(4, 7),
                                 PlayerNames.Warrior[random.Next(0, PlayerNames.Warrior.Length)],
@@ -68,7 +75,7 @@
 
                     case 2:
                         {
-                            Players.Add(new Mage(
+                            _players.Add(new Mage(
                                 random.Next(50, 70),
                                 random.Next(4, 7),
                                 PlayerNames.Mage[random.Next(0, PlayerNames.Mage.Length)],
@@ -79,25 +86,18 @@
             }
         }
 
-        public void Tournament()
+        private void Tournament()
         {
-            while (Players.Count > 1)
+            while (_players.Count > 1)
             {
-                CurrentRound = new Round(Players);
-                CurrentRound.Start();
+                _currentRound = new Round(_players);
+                _currentRound.Start();
             }
         }
 
-        public void CurrentWinner()
+        private void CurrentWinner()
         {
-            _logger.WinnerLog(Players[0]);
-        }
-
-        public void Start()
-        {
-            Filling();
-            Tournament();
-            CurrentWinner();
+            _logger.WinnerLog(_players[0]);
         }
     }
 }
