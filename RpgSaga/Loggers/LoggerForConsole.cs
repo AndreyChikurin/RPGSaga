@@ -3,7 +3,7 @@
     using System;
     using RpgSaga.Players;
 
-    public class LoggerForConsole : Logger
+    public class LoggerForConsole : ILogger
     {
         public override void EffectLog(Player player, string effectName)
         {

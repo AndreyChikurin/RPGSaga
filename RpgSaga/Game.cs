@@ -4,7 +4,7 @@
 
     public class Game
     {
-        private Logger _logger;
+        private ILogger _logger;
 
         public Game(int log)
         {

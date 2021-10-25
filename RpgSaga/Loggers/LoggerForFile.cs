@@ -3,7 +3,7 @@
     using System.IO;
     using RpgSaga.Players;
 
-    public class LoggerForFile : Logger
+    public class LoggerForFile : ILogger
     {
         private readonly string path = @"c:\Users\andre\Desktop\MyTest.txt";
 
