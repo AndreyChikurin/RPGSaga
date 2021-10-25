@@ -1,11 +1,8 @@
 ﻿namespace RpgSaga.Consts
 {
-    public class LogTypes
+    public enum LogType
     {
-        public enum LogType
-        {
-            LogConsole,
-            LogFile,
-        }
+        LogConsole,
+        LogFile,
     }
 }

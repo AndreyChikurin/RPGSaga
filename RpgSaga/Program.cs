@@ -7,7 +7,7 @@
     {
         public static void Main(string[] args)
         {
-            var game = new Game((LogTypes.LogType)1, 4);
+            var game = new Game((LogType)1, 4);
         }
     }
 }

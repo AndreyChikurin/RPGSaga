@@ -4,12 +4,12 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using RpgSaga.Consts;
     using RpgSaga.Interfaces;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
     using RpgSaga.Rounds;
     using RpgSaga.Skills;
-    using static RpgSaga.Consts.LogTypes;
 
     public class Game
     {
