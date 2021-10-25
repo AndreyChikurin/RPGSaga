@@ -2,16 +2,23 @@
 {
     using RpgSaga.Effects;
     using RpgSaga.Interfaces;
-    using RpgSaga.Logger;
+    using RpgSaga.Loggers;
     using RpgSaga.Players;
 
     public class FireArrows : ISkill
     {
+        private ILogger _skillLogger;
+
+        public FireArrows(ILogger skillLogger)
+        {
+            _skillLogger = skillLogger;
+        }
+
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {
-            targetPlayer.Effects.Add(new Burning());
+            targetPlayer.Effects.Add(new Burning(_skillLogger));
 
-            Logger.SkillLog(soursePlayer, targetPlayer, "FireArrows");
+            _skillLogger.SkillLog(soursePlayer, targetPlayer, "FireArrows");
         }
     }
 }

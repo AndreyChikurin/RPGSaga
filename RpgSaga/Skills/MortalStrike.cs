@@ -2,19 +2,26 @@
 {
     using System;
     using RpgSaga.Interfaces;
-    using RpgSaga.Logger;
+    using RpgSaga.Loggers;
     using RpgSaga.Players;
 
     public class MortalStrike : ISkill
     {
+        private ILogger _skillLogger;
+
         private decimal damageCoefficient = 1.3m;
+
+        public MortalStrike(ILogger skillLogger)
+        {
+            _skillLogger = skillLogger;
+        }
 
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {
             int damage = (int)Math.Round(soursePlayer.Strength * damageCoefficient);
             targetPlayer.Hp -= damage;
 
-            Logger.SkillLog(soursePlayer, targetPlayer, $"MortalStrike and deal {damage}");
+            _skillLogger.SkillLog(soursePlayer, targetPlayer, $"MortalStrike and deal {damage}");
         }
     }
 }
