@@ -10,6 +10,12 @@
     using RpgSaga.Rounds;
     using RpgSaga.Skills;
 
+    public enum LogType
+    {
+        LogConsole,
+        LogFile,
+    }
+
     public class Game
     {
         private int _numberOfPlayerTypes;
@@ -28,12 +34,6 @@
             _numberOfPlayers = numberOfPlayers;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
-        }
-
-        public enum LogType
-        {
-            LogConsole,
-            LogFile,
         }
 
         public void Start()
