@@ -24,10 +24,5 @@
         {
             Console.WriteLine("The " + winner.GetType().Name + " " + winner.Name + " won");
         }
-
-        public void Test()
-        {
-            Console.WriteLine("ASda");
-        }
     }
 }
