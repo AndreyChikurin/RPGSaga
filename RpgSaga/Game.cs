@@ -6,10 +6,16 @@
     {
         private ILogger _logger;
 
-        public Game(int log)
+        public Game(LogType log)
         {
-            _logger = log == 1 ? new LoggerForConsole() : new LoggerForFile("C:\\Users\\andre\\Desktop\\RPG\\rpgsaganetcore\\RpgSaga\\bin\\Debug\\netcoreapp5\\");
+            _logger = log == 0 ? new LoggerForConsole() : new LoggerForFile("C:\\Users\\andre\\Desktop\\RPG\\rpgsaganetcore\\RpgSaga\\bin\\Debug\\netcoreapp5\\");
             _logger.Test();
+        }
+
+        public enum LogType
+        {
+            LogConsole,
+            LogFile,
         }
     }
 }

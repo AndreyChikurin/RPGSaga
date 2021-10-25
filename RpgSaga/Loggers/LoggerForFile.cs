@@ -15,7 +15,6 @@
         public LoggerForFile(string filePath)
         {
             _filePath = filePath;
-            Console.WriteLine(_filePath);
         }
 
         public void EffectLog(Player player, string effectName)

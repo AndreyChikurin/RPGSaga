@@ -6,7 +6,7 @@
     {
         public static void Main(string[] args)
         {
-            var game = new Game(2);
+            var game = new Game((Game.LogType)1);
         }
     }
 }
