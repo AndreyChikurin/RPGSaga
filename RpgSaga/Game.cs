@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
     using RpgSaga.Interfaces;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
@@ -10,7 +12,7 @@
 
     public class Game
     {
-        private const int _numberOfPlayerTypes = 3;
+        private int _numberOfPlayerTypes;
 
         private int _numberOfPlayers;
 
@@ -21,6 +23,7 @@
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
             _numberOfPlayers = numberOfPlayers;
             Players = new List<Player>();
+            _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
         public enum LogType
