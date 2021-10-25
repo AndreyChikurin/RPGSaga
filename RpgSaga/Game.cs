@@ -10,7 +10,7 @@
 
     public class Game
     {
-        private const int NumberOfPlayerTypes = 3;
+        private const int _numberOfPlayerTypes = 3;
 
         private int _numberOfPlayers;
 
@@ -23,9 +23,15 @@
             Players = new List<Player>();
         }
 
-        public List<Player> Players { get; set; }
+        public enum LogType
+        {
+            LogConsole,
+            LogFile,
+        }
 
-        public Round CurrentRound { get; set; }
+        private List<Player> Players { get; set; }
+
+        private Round CurrentRound { get; set; }
 
         public void Filling()
         {
@@ -35,7 +41,7 @@
 
             for (int i = 0; i < _numberOfPlayers - 1; i++)
             {
-                switch (random.Next(0, NumberOfPlayerTypes))
+                switch (random.Next(0, _numberOfPlayerTypes))
                 {
                     case 0:
                         {
@@ -91,10 +97,4 @@
             CurrentWinner();
         }
     }
-}
-
-public enum LogType
-{
-    LogConsole,
-    LogFile,
 }
