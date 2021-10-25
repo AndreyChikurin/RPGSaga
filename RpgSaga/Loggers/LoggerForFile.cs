@@ -1,11 +1,22 @@
 ﻿namespace RpgSaga.Loggers
 {
+    using System;
     using System.IO;
     using RpgSaga.Players;
 
     public class LoggerForFile : ILogger
     {
-        private readonly string path = @"c:\Users\andre\Desktop\MyTest.txt";
+        private static string _filePath;
+
+        private string path = Path.Combine($"{_filePath}Logs", $"Log#{DateTime.Now.ToString("dd.MM.yyyy")}.txt");
+
+        private string fileName = DateTime.Now.ToString();
+
+        public LoggerForFile(string filePath)
+        {
+            _filePath = filePath;
+            Console.WriteLine(_filePath);
+        }
 
         public void EffectLog(Player player, string effectName)
         {
@@ -25,6 +36,11 @@
         public void WinnerLog(Player winner)
         {
             File.WriteAllText(path, "The " + winner.GetType().Name + " " + winner.Name + " won");
+        }
+
+        public void Test()
+        {
+            File.AppendAllText(path, fileName);
         }
     }
 }

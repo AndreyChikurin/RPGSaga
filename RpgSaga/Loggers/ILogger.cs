@@ -11,5 +11,7 @@
         public void SkillLog(Player soursePlayer, Player targetPlayer, string skillName);
 
         public void WinnerLog(Player player);
+
+        public void Test();
     }
 }
