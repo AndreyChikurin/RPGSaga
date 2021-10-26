@@ -4,7 +4,7 @@
 
     public interface IEffect
     {
-        public int Duration { get; set; }
+        public int Duration { get; }
 
         public void EffectAction(Player player);
     }

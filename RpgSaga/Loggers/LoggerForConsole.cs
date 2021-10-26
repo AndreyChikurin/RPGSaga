@@ -7,7 +7,7 @@
     {
         public void EffectLog(Player player, string effectName)
         {
-            Console.WriteLine(player.GetType().Name + " " + player.Name + $" is under the effect {effectName}");
+            Console.WriteLine(player.GetType().Name + " " + player.Name + $" is under the effect {effectName} ({player.Hp}Hp)");
         }
 
         public void FightLog(Player attacker, Player defender)
@@ -17,12 +17,13 @@
 
         public void SkillLog(Player soursePlayer, Player targetPlayer, string skillName)
         {
-            Console.WriteLine(soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name);
+            Console.WriteLine(soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name + $"({targetPlayer.Hp}Hp)");
         }
 
         public void WinnerLog(Player winner)
         {
             Console.WriteLine("The " + winner.GetType().Name + " " + winner.Name + " won");
+            Console.WriteLine();
         }
     }
 }

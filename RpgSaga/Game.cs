@@ -21,8 +21,6 @@
 
         private List<Player> _players;
 
-        private Round _currentRound;
-
         public Game(LogType log, int numberOfPlayers)
         {
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
@@ -44,16 +42,16 @@
 
             _players = new List<Player>(_numberOfPlayers);
 
-            for (int i = 0; i < _numberOfPlayers - 1; i++)
+            for (int i = 0; i < _numberOfPlayers; i++)
             {
                 switch (random.Next(0, _numberOfPlayerTypes))
                 {
                     case 0:
                         {
                             _players.Add(new Hunter(
-                                random.Next(50, 70),
                                 random.Next(4, 7),
-                                PlayerNames.Hunter[random.Next(0, PlayerNames.Hunter.Length)],
+                                random.Next(50, 70),
+                                PlayerNames.Hunter[random.Next(0, PlayerNames.Hunter.Length)] + $"{i + 1}",
                                 new List<ISkill> { new FireArrows(_logger) }));
                             break;
                         }
@@ -61,9 +59,9 @@
                     case 1:
                         {
                             _players.Add(new Warrior(
-                                random.Next(50, 70),
                                 random.Next(4, 7),
-                                PlayerNames.Warrior[random.Next(0, PlayerNames.Warrior.Length)],
+                                random.Next(50, 70),
+                                PlayerNames.Warrior[random.Next(0, PlayerNames.Warrior.Length)] + $"{i + 1}",
                                 new List<ISkill> { new MortalStrike(_logger) }));
                             break;
                         }
@@ -71,13 +69,15 @@
                     case 2:
                         {
                             _players.Add(new Mage(
-                                random.Next(50, 70),
                                 random.Next(4, 7),
-                                PlayerNames.Mage[random.Next(0, PlayerNames.Mage.Length)],
+                                random.Next(50, 70),
+                                PlayerNames.Mage[random.Next(0, PlayerNames.Mage.Length)] + $"{i + 1}",
                                 new List<ISkill> { new Freezing(_logger) }));
                             break;
                         }
                 }
+
+                Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
             }
         }
 
@@ -85,8 +85,8 @@
         {
             while (_players.Count > 1)
             {
-                _currentRound = new Round(_players);
-                _currentRound.Start();
+                Round currentRound = new Round(_players, _logger);
+                currentRound.Start();
             }
         }
 
