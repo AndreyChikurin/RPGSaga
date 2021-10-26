@@ -59,11 +59,6 @@
             Effects.RemoveAll(effect => effect.Duration == 0);
         }
 
-        public bool MoveSkipping()
-        {
-            return Effects.OfType<IMoveSkipping>().Any();
-        }
-
         public void Punch(Player defender, ILogger logger)
         {
             defender.Hp -= Strength;
