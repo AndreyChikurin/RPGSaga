@@ -55,7 +55,6 @@
             else
             {
                 SkillsLogic.PerfomSkill(attacker, defender);
-                Console.WriteLine($"SKILLL +{attacker}");
             }
 
             if (defender.Hp > 0)
