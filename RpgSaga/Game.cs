@@ -21,8 +21,6 @@
 
         private List<Player> _players;
 
-        private Round _currentRound;
-
         public Game(LogType log, int numberOfPlayers)
         {
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
@@ -87,8 +85,8 @@
         {
             while (_players.Count > 1)
             {
-                _currentRound = new Round(_players, _logger);
-                _currentRound.Start();
+                Round currentRound = new Round(_players, _logger);
+                currentRound.Start();
             }
         }
 
