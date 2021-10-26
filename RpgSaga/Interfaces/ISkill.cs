@@ -4,7 +4,7 @@
 
     public interface ISkill
     {
-        public bool SkillCanBeUsed { get; set; }
+        public bool SkillCanBeUsed { get; }
 
         public void SkillAction(Player soursePlayer, Player targetPlayer);
     }

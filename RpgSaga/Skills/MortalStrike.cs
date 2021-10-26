@@ -17,7 +17,7 @@
             SkillCanBeUsed = true;
         }
 
-        public bool SkillCanBeUsed { get; set; }
+        public bool SkillCanBeUsed { get; private set; }
 
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {
