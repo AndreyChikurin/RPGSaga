@@ -21,7 +21,7 @@
             int damage = (int)Math.Round(soursePlayer.Strength * damageCoefficient);
             targetPlayer.Hp -= damage;
 
-            _skillLogger.SkillLog(soursePlayer, targetPlayer, $"MortalStrike and deal {damage}");
+            _skillLogger.SkillLog(soursePlayer, targetPlayer, $"MortalStrike and deals {damage}");
         }
     }
 }

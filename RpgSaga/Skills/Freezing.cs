@@ -16,7 +16,7 @@
 
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {
-            targetPlayer.Effects.Add(new SkipMove(_skillLogger));
+            targetPlayer.Effects.Add(new SkipMove(_skillLogger, 1));
 
             _skillLogger.SkillLog(soursePlayer, targetPlayer, "Freezing");
         }

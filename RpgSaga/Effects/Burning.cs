@@ -11,9 +11,10 @@
         public Burning(ILogger effectLogger)
         {
             _effectLogger = effectLogger;
+            Duration = 1;
         }
 
-        public int Duration { get => Duration; set => Duration = 1; }
+        public int Duration { get; set; }
 
         public void EffectAction(Player player)
         {

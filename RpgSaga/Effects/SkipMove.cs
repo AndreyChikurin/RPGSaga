@@ -4,24 +4,20 @@
     using RpgSaga.Loggers;
     using RpgSaga.Players;
 
-    public class SkipMove : IEffect
+    public class SkipMove : IEffect, IMoveSkipping
     {
         private ILogger _effectLogger;
 
-        public SkipMove(ILogger effectLogger)
+        public SkipMove(ILogger effectLogger, int duration)
         {
             _effectLogger = effectLogger;
+            Duration = duration;
         }
 
-        public int Duration { get => Duration; set => Duration = 1; }
+        public int Duration { get; set; }
 
         public void EffectAction(Player player)
         {
-            if (Duration == 0)
-            {
-                player.Effects.Remove(this);
-            }
-
             _effectLogger.EffectLog(player, "SkipMove");
 
             Duration--;

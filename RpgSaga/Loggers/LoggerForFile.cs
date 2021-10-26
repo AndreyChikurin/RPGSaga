@@ -20,7 +20,7 @@
 
         public void EffectLog(Player player, string effectName)
         {
-            File.WriteAllText(path, player.GetType().Name + " " + player.Name + $" is under the effect {effectName}");
+            File.WriteAllText(path, player.GetType().Name + " " + player.Name + $" is under the effect {effectName} ({player.Hp}Hp)");
         }
 
         public void FightLog(Player attacker, Player defender)
@@ -30,7 +30,7 @@
 
         public void SkillLog(Player soursePlayer, Player targetPlayer, string skillName)
         {
-            File.WriteAllText(path, soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name);
+            File.WriteAllText(path, soursePlayer.GetType().Name + " " + soursePlayer.Name + $" uses {skillName} on the " + targetPlayer.GetType().Name + " " + targetPlayer.Name + $"({targetPlayer.Hp}Hp)");
         }
 
         public void WinnerLog(Player winner)
