@@ -14,7 +14,7 @@
             Duration = duration;
         }
 
-        public int Duration { get; set; }
+        public int Duration { get; private set; }
 
         public void EffectAction(Player player)
         {
