@@ -14,7 +14,10 @@
         public MortalStrike(ILogger skillLogger)
         {
             _skillLogger = skillLogger;
+            SkillCanBeUsed = true;
         }
+
+        public bool SkillCanBeUsed { get; set; }
 
         public void SkillAction(Player soursePlayer, Player targetPlayer)
         {

@@ -1,10 +1,8 @@
 ﻿namespace RpgSaga.Rounds
 {
     using System;
-    using RpgSaga.Effects;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
-    using RpgSaga.Skills;
 
     public class Fight
     {
@@ -21,45 +19,56 @@
             _fightLogger = fightLogger;
         }
 
-        public void Start()
+        public Player Start()
         {
             FightAction();
-            ResetAfterFight();
+            return ResetAfterFight();
         }
 
-        private void ResetAfterFight()
+        private Player ResetAfterFight()
         {
+            Player looser;
+
             if (_attacker.Hp > 0)
             {
                 _attacker.Reset();
+                looser = _defender;
             }
             else
             {
                 _defender.Reset();
+                looser = _attacker;
             }
+
+            return looser;
         }
 
         private void Attack(Player attacker, Player defender)
         {
             Random random = new Random();
 
-            if (EffectLogic.MoveSkipping(attacker))
+            if (attacker.ShouldSkipMove)
             {
-                EffectLogic.PerformEffects(attacker);
-                Attack(defender, attacker);
+                attacker.PerformEffects();
+                return;
             }
-            else if (random.Next(1, 10) < 6)
+
+            if (random.Next(1, 10) >= 7)
             {
-                Hit.Punch(attacker, defender, _fightLogger);
+                var attackerSkill = attacker.Skills[random.Next(0, attacker.Skills.Count)];
+                if (attackerSkill.SkillCanBeUsed)
+                {
+                    attackerSkill.SkillAction(attacker, defender);
+                    attacker.PerformEffects();
+                    return;
+                }
             }
-            else
-            {
-                SkillsLogic.PerfomSkill(attacker, defender);
-            }
+
+            attacker.Punch(defender, _fightLogger);
 
             if (defender.Hp > 0)
             {
-                EffectLogic.PerformEffects(attacker);
+                attacker.PerformEffects();
             }
         }
 

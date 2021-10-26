@@ -22,12 +22,6 @@
         {
             RefreshPlayers();
             CrateFights();
-            RemoveDeadPlayer();
-        }
-
-        private void RemoveDeadPlayer()
-        {
-            _players.RemoveAll(player => player.Hp <= 0);
         }
 
         private Player GetAvailiablePlayer()
@@ -46,7 +40,7 @@
                 Player firstPlayer = GetAvailiablePlayer();
                 Player secondPlayer = GetAvailiablePlayer();
                 Fight fight = new Fight(firstPlayer, secondPlayer, _logger);
-                fight.Start();
+                _players.Remove(fight.Start());
             }
         }
 
