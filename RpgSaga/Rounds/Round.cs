@@ -1,19 +1,58 @@
 ﻿namespace RpgSaga.Rounds
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using RpgSaga.Loggers;
     using RpgSaga.Players;
 
     public class Round
     {
-        public Round(List<Player> players)
-        {
-            Players = players;
-        }
+        private List<Player> _players;
 
-        public List<Player> Players { get; set; }
+        private ILogger _logger;
+
+        public Round(List<Player> players, ILogger logger)
+        {
+            _players = players;
+            _logger = logger;
+        }
 
         public void Start()
         {
+            RefreshPlayers();
+            CrateFights();
+            RemoveDeadPlayer();
+        }
+
+        private void RemoveDeadPlayer()
+        {
+            _players.RemoveAll(player => player.Hp <= 0);
+        }
+
+        private Player GetAvailiablePlayer()
+        {
+            Random random = new Random();
+            List<Player> availablePlayer = _players.Where(player => player.IsCurrentRoundFinished == false).ToList();
+            int playerNumber = random.Next(0, availablePlayer.Count);
+            availablePlayer[playerNumber].IsCurrentRoundFinished = true;
+            return availablePlayer[playerNumber];
+        }
+
+        private void CrateFights()
+        {
+            for (int i = 0; i < _players.Count / 2; i++)
+            {
+                Player firstPlayer = GetAvailiablePlayer();
+                Player secondPlayer = GetAvailiablePlayer();
+                Fight fight = new Fight(firstPlayer, secondPlayer, _logger);
+                fight.Start();
+            }
+        }
+
+        private void RefreshPlayers()
+        {
+            _players.ForEach(player => player.IsCurrentRoundFinished = false);
         }
     }
 }

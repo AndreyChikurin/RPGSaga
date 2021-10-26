@@ -21,12 +21,21 @@
 
         private List<Player> _players;
 
+        private Round _currentRound;
+
         public Game(LogType log, int numberOfPlayers)
         {
             _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
             _numberOfPlayers = numberOfPlayers;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
+        }
+
+        public void Start()
+        {
+            Filling();
+            Tournament();
+            CurrentWinner();
         }
 
         private void Filling()
@@ -69,7 +78,23 @@
                             break;
                         }
                 }
+
+                Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
             }
+        }
+
+        private void Tournament()
+        {
+            while (_players.Count > 1)
+            {
+                _currentRound = new Round(_players, _logger);
+                _currentRound.Start();
+            }
+        }
+
+        private void CurrentWinner()
+        {
+            _logger.WinnerLog(_players[0]);
         }
     }
 }
