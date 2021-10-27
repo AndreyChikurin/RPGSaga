@@ -10,6 +10,7 @@
     using RpgSaga.Players;
     using RpgSaga.Rounds;
     using RpgSaga.Skills;
+    using RpgSaga.User;
 
     public class Game
     {
@@ -21,16 +22,19 @@
 
         private List<Player> _players;
 
-        public Game(LogType log, int numberOfPlayers)
+        private UserActions _userActions;
+
+        public Game()
         {
-            _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
-            _numberOfPlayers = numberOfPlayers;
+            _userActions = new UserActions();
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
         public void Start()
         {
+            ChoosingLogger();
+            ChoosingNumberOfPlayers();
             Filling();
             Tournament();
             CurrentWinner();
@@ -93,6 +97,61 @@
         private void CurrentWinner()
         {
             _logger.WinnerLog(_players[0]);
+        }
+
+        private void ChoosingLogger()
+        {
+            while (_logger is null)
+            {
+                try
+                {
+                    Console.Write("Enter 1 to write logs to a file or 0 to write logs to the console: ");
+                    LogType log = _userActions.InputForChoosingLogger();
+
+                    if (log == LogType.LogFile)
+                    {
+                        _logger = new LoggerForFile(@"Logs");
+                    }
+
+                    if (log == LogType.LogConsole)
+                    {
+                        _logger = new LoggerForConsole();
+                    }
+
+                    if (log != LogType.LogFile && log != LogType.LogConsole)
+                    {
+                        Console.WriteLine("Please, try again.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(ex.Message);
+                }
+            }
+        }
+
+        private void ChoosingNumberOfPlayers()
+        {
+            while (_numberOfPlayers == 0)
+            {
+                try
+                {
+                    Console.Write("Please select an even number of players: ");
+                    _numberOfPlayers = _userActions.InputForChoosingNumberOfPlayers();
+
+                    if (_numberOfPlayers <= 0 || _numberOfPlayers % 2 == 1)
+                    {
+                        _numberOfPlayers = 0;
+                        Console.WriteLine("Please, try again.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine();
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }
