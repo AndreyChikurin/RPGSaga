@@ -12,10 +12,10 @@
             while (!game.GameHaveCompleted)
             {
                 Console.Write("Enter 1 to write logs to a file or 0 to write logs to the console: ");
-                int.TryParse(Console.ReadLine(), out var loggerType);
+                string loggerType = Console.ReadLine();
 
                 Console.Write("Please select an even number of players: ");
-                int.TryParse(Console.ReadLine(), out var playersNumber);
+                string playersNumber = Console.ReadLine();
 
                 game.Start(loggerType, playersNumber);
 
@@ -25,6 +25,8 @@
                     {
                         Console.WriteLine(errorMessage);
                     }
+
+                    game.ErrorMessage.Clear();
                 }
             }
         }

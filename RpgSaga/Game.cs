@@ -29,11 +29,11 @@
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public List<string> ErrorMessage { get; private set; }
+        public List<string> ErrorMessage { get; set; }
 
         public bool GameHaveCompleted { get; private set; }
 
-        public bool Start(int loggerType, int playersNumber)
+        public bool Start(string loggerType, string playersNumber)
         {
             if (ChoosingLogger(loggerType) && ChoosingNumberOfPlayers(playersNumber))
             {
@@ -106,11 +106,11 @@
             _logger.WinnerLog(_players[0]);
         }
 
-        private bool ChoosingLogger(int loggerType)
+        private bool ChoosingLogger(string loggerType)
         {
             try
             {
-                LogType log = (LogType)loggerType;
+                LogType log = (LogType)int.Parse(loggerType);
 
                 if (log == LogType.LogFile)
                 {
@@ -138,13 +138,15 @@
             return true;
         }
 
-        private bool ChoosingNumberOfPlayers(int playersNumber)
+        private bool ChoosingNumberOfPlayers(string playersNumber)
         {
             try
             {
-                if (playersNumber > 0 && playersNumber % 2 == 0)
+                int playerNumbers = int.Parse(playersNumber);
+
+                if (playerNumbers > 0 && playerNumbers % 2 == 0)
                 {
-                    _numberOfPlayers = playersNumber;
+                    _numberOfPlayers = playerNumbers;
                 }
                 else
                 {
