@@ -23,12 +23,13 @@
 
         public Game()
         {
+            ErrorMessage = new List<string>();
             GameHaveCompleted = false;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public string ErrorMessage { get; private set; }
+        public List<string> ErrorMessage { get; private set; }
 
         public bool GameHaveCompleted { get; private set; }
 
@@ -122,13 +123,15 @@
                 }
                 else
                 {
-                    ErrorMessage = "Please, try again.(incorrect log type)";
+                    string errorMessage = "Please, try again.(incorrect log type)";
+                    ErrorMessage.Add(errorMessage);
+
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage.Add(ex.Message);
                 return false;
             }
 
@@ -146,13 +149,15 @@
                 else
                 {
                     _numberOfPlayers = 0;
-                    ErrorMessage = "Please, try again.(incorrect players number))";
+                    string errorMessage = "Please, try again.(incorrect players number)";
+                    ErrorMessage.Add(errorMessage);
+
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage.Add(ex.Message);
                 return false;
             }
 
