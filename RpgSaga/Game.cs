@@ -10,7 +10,6 @@
     using RpgSaga.Players;
     using RpgSaga.Rounds;
     using RpgSaga.Skills;
-    using RpgSaga.User;
 
     public class Game
     {
@@ -22,22 +21,29 @@
 
         private List<Player> _players;
 
-        private UserActions _userActions;
-
         public Game()
         {
-            _userActions = new UserActions();
+            GameHaveCompleted = false;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public void Start()
+        public string ErrorMessage { get; private set; }
+
+        public bool GameHaveCompleted { get; private set; }
+
+        public bool Start(int loggerType, int playersNumber)
         {
-            ChoosingLogger();
-            ChoosingNumberOfPlayers();
-            Filling();
-            Tournament();
-            CurrentWinner();
+            if (ChoosingLogger(loggerType) && ChoosingNumberOfPlayers(playersNumber))
+            {
+                Filling();
+                Tournament();
+                CurrentWinner();
+                GameHaveCompleted = true;
+                return true;
+            }
+
+            return false;
         }
 
         private void Filling()
@@ -99,61 +105,58 @@
             _logger.WinnerLog(_players[0]);
         }
 
-        private void ChoosingLogger()
+        private bool ChoosingLogger(int loggerType)
         {
-            while (_logger is null)
+            try
             {
-                try
+                LogType log = (LogType)loggerType;
+
+                if (log == LogType.LogFile)
                 {
-                    Console.Write("Enter 1 to write logs to a file or 0 to write logs to the console: ");
-                    LogType log = _userActions.InputForChoosingLogger();
-
-                    if (log == LogType.LogFile)
-                    {
-                        Console.Write("Enter the path where the file will be stored: ");
-                        string path = _userActions.InputForTheFilePath();
-                        _logger = new LoggerForFile(@$"{path}");
-                    }
-
-                    if (log == LogType.LogConsole)
-                    {
-                        _logger = new LoggerForConsole();
-                    }
-
-                    if (log != LogType.LogFile && log != LogType.LogConsole)
-                    {
-                        Console.WriteLine("Please, try again.");
-                    }
+                    _logger = new LoggerForFile(@"Logs");
                 }
-                catch (Exception ex)
+
+                if (log == LogType.LogConsole)
                 {
-                    Console.WriteLine();
-                    Console.WriteLine(ex.Message);
+                    _logger = new LoggerForConsole();
+                }
+                else
+                {
+                    ErrorMessage = "Please, try again.(incorrect log type)";
+                    return false;
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return false;
+            }
+
+            return true;
         }
 
-        private void ChoosingNumberOfPlayers()
+        private bool ChoosingNumberOfPlayers(int playersNumber)
         {
-            while (_numberOfPlayers == 0)
+            try
             {
-                try
+                if (playersNumber > 0 && playersNumber % 2 == 0)
                 {
-                    Console.Write("Please select an even number of players: ");
-                    _numberOfPlayers = _userActions.InputForChoosingNumberOfPlayers();
-
-                    if (_numberOfPlayers <= 0 || _numberOfPlayers % 2 == 1)
-                    {
-                        _numberOfPlayers = 0;
-                        Console.WriteLine("Please, try again.");
-                    }
+                    _numberOfPlayers = playersNumber;
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine();
-                    Console.WriteLine(ex.Message);
+                    _numberOfPlayers = 0;
+                    ErrorMessage = "Please, try again.(incorrect players number))";
+                    return false;
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                return false;
+            }
+
+            return true;
         }
     }
 }

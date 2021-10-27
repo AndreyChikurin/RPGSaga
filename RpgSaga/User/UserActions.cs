@@ -18,11 +18,5 @@
             var input = Console.ReadLine().ToString();
             return int.Parse(input);
         }
-
-        public string InputForTheFilePath()
-        {
-            string input = Console.ReadLine().ToString();
-            return input;
-        }
     }
 }
