@@ -110,7 +110,9 @@
 
                     if (log == LogType.LogFile)
                     {
-                        _logger = new LoggerForFile(@"Logs");
+                        Console.Write("Enter the path where the file will be stored: ");
+                        string path = _userActions.InputForTheFilePath();
+                        _logger = new LoggerForFile(@$"{path}");
                     }
 
                     if (log == LogType.LogConsole)
