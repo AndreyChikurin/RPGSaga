@@ -21,12 +21,12 @@
 
                 if (!game.GameHaveCompleted)
                 {
-                    foreach (string errorMessage in game.ErrorMessage)
+                    foreach (string errorMessage in game.ErrorMessages)
                     {
                         Console.WriteLine(errorMessage);
                     }
 
-                    game.ErrorMessage.Clear();
+                    game.ErrorMessages.Clear();
                 }
             }
         }

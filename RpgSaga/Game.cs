@@ -33,7 +33,7 @@
 
         public bool GameHaveCompleted { get; private set; }
 
-        public bool Start(string loggerType, string playersNumber)
+        public void Start(string loggerType, string playersNumber)
         {
             if (ChoosingLogger(loggerType) && ChoosingNumberOfPlayers(playersNumber))
             {
@@ -41,10 +41,7 @@
                 Tournament();
                 CurrentWinner();
                 GameHaveCompleted = true;
-                return true;
             }
-
-            return false;
         }
 
         private void Filling()
