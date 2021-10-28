@@ -112,36 +112,32 @@
             bool success = int.TryParse(loggerType, out int number);
             string errorMessage;
 
-            if (success)
+            if (!success)
             {
-                LogType log = (LogType)number;
-
-                if (log == LogType.LogFile)
-                {
-                    _logger = new LoggerForFile(@"Logs");
-                }
-
-                if (log == LogType.LogConsole)
-                {
-                    _logger = new LoggerForConsole();
-                }
-                else
-                {
-                    errorMessage = "Please, try again.(incorrect log type)";
-                    _errorMessages.Add(errorMessage);
-
-                    return false;
-                }
-            }
-            else
-            {
-                errorMessage = "Please, try again.(log type was not a number)";
+                errorMessage = "Log type was not a number";
                 _errorMessages.Add(errorMessage);
 
                 return false;
             }
 
-            return true;
+            LogType log = (LogType)number;
+
+            if (log == LogType.LogFile)
+            {
+                _logger = new LoggerForFile(@"Logs");
+                return true;
+            }
+
+            if (log == LogType.LogConsole)
+            {
+                _logger = new LoggerForConsole();
+                return true;
+            }
+
+            errorMessage = "Incorrect log type";
+            _errorMessages.Add(errorMessage);
+
+            return false;
         }
 
         private bool ChoosingNumberOfPlayers(string playersNumber)
@@ -149,21 +145,22 @@
             bool success = int.TryParse(playersNumber, out int number);
             string errorMessage;
 
-            if (success && number > 0 && number % 2 == 0)
+            if (!success)
             {
-                _numberOfPlayers = number;
-                return true;
-            }
-            else if (success)
-            {
-                _numberOfPlayers = 0;
-                errorMessage = "Please, try again.(incorrect players number)";
+                errorMessage = "Players number was not a number";
                 _errorMessages.Add(errorMessage);
 
                 return false;
             }
 
-            errorMessage = "Please, try again.(players number was not a number)";
+            if (number > 0 && number % 2 == 0)
+            {
+                _numberOfPlayers = number;
+                return true;
+            }
+
+            _numberOfPlayers = 0;
+            errorMessage = "incorrect players number";
             _errorMessages.Add(errorMessage);
 
             return false;
