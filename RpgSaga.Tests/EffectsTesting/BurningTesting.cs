@@ -1,4 +1,4 @@
-﻿namespace RpgSaga.Tests.SkillsTesting
+﻿namespace RpgSaga.Tests.EffectsTesting
 {
     using System.Collections.Generic;
     using RpgSaga.Effects;
