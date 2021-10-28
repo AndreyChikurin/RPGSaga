@@ -20,8 +20,11 @@
 
             List<IEffect> currentEffect = new List<IEffect>() { new Burning(testLogger) };
 
+            Assert.True(mage1.Skills[0].SkillCanBeUsed);
+
             mage1.Skills[0].SkillAction(mage1, mage2);
 
+            Assert.True(!mage1.Skills[0].SkillCanBeUsed);
             Assert.Equal(currentEffect[0].GetType(), mage2.Effects[0].GetType());
         }
     }
