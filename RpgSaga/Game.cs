@@ -31,11 +31,7 @@
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public IEnumerable<string> ErrorMessages
-        {
-            get { return _errorMessages; }
-            set { _errorMessages = value.ToList(); }
-        }
+        public IEnumerable<string> ErrorMessages => _errorMessages;
 
         public bool GameHaveCompleted { get; private set; }
 
@@ -153,30 +149,24 @@
             bool success = int.TryParse(playersNumber, out int number);
             string errorMessage;
 
-            if (success)
+            if (success && number > 0 && number % 2 == 0)
             {
-                if (number > 0 && number % 2 == 0)
-                {
-                    _numberOfPlayers = number;
-                }
-                else
-                {
-                    _numberOfPlayers = 0;
-                    errorMessage = "Please, try again.(incorrect players number)";
-                    _errorMessages.Add(errorMessage);
-
-                    return false;
-                }
+                _numberOfPlayers = number;
+                return true;
             }
-            else
+            else if (success)
             {
-                errorMessage = "Please, try again.(players number was not a number)";
+                _numberOfPlayers = 0;
+                errorMessage = "Please, try again.(incorrect players number)";
                 _errorMessages.Add(errorMessage);
 
                 return false;
             }
 
-            return true;
+            errorMessage = "Please, try again.(players number was not a number)";
+            _errorMessages.Add(errorMessage);
+
+            return false;
         }
     }
 }
