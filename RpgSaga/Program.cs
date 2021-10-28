@@ -19,12 +19,9 @@
 
                 game.Start(loggerType, playersNumber);
 
-                if (!game.GameHaveCompleted)
+                foreach (string errorMessage in game.ErrorMessages)
                 {
-                    foreach (string errorMessage in game.ErrorMessages)
-                    {
-                        Console.WriteLine(errorMessage);
-                    }
+                    Console.WriteLine(errorMessage);
                 }
             }
         }
