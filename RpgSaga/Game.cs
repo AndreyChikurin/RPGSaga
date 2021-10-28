@@ -21,19 +21,31 @@
 
         private List<Player> _players;
 
-        public Game(LogType log, int numberOfPlayers)
+        private List<string> _errorMessages;
+
+        public Game()
         {
-            _logger = log == LogType.LogConsole ? new LoggerForConsole() : new LoggerForFile(@"Logs");
-            _numberOfPlayers = numberOfPlayers;
+            _errorMessages = new List<string>();
+            GameHaveCompleted = false;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public void Start()
+        public IEnumerable<string> ErrorMessages => _errorMessages;
+
+        public bool GameHaveCompleted { get; private set; }
+
+        public void Start(string loggerType, string playersNumber)
         {
-            Filling();
-            Tournament();
-            CurrentWinner();
+            _errorMessages.Clear();
+
+            if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
+            {
+                Filling();
+                Tournament();
+                CurrentWinner();
+                GameHaveCompleted = true;
+            }
         }
 
         private void Filling()
@@ -93,6 +105,65 @@
         private void CurrentWinner()
         {
             _logger.WinnerLog(_players[0]);
+        }
+
+        private bool ChoosingLogger(string loggerType)
+        {
+            bool success = int.TryParse(loggerType, out int number);
+            string errorMessage;
+
+            if (!success)
+            {
+                errorMessage = "Log type was not a number";
+                _errorMessages.Add(errorMessage);
+
+                return false;
+            }
+
+            LogType log = (LogType)number;
+
+            if (log == LogType.LogFile)
+            {
+                _logger = new LoggerForFile(@"Logs");
+                return true;
+            }
+
+            if (log == LogType.LogConsole)
+            {
+                _logger = new LoggerForConsole();
+                return true;
+            }
+
+            errorMessage = "Incorrect log type";
+            _errorMessages.Add(errorMessage);
+
+            return false;
+        }
+
+        private bool ChoosingNumberOfPlayers(string playersNumber)
+        {
+            bool success = int.TryParse(playersNumber, out int number);
+            string errorMessage;
+
+            if (!success)
+            {
+                errorMessage = "Players number was not a number";
+                _errorMessages.Add(errorMessage);
+
+                return false;
+            }
+
+            if (number > 0 && number % 2 == 0)
+            {
+                _numberOfPlayers = number;
+                return true;
+            }
+
+            _numberOfPlayers = 0;
+            errorMessage = "incorrect players number";
+            _errorMessages.Add(errorMessage);
+
+            return false;
         }
     }
 }
