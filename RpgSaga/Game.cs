@@ -39,7 +39,7 @@
         {
             _errorMessages.Clear();
 
-            if (ChoosingLogger(loggerType) && ChoosingNumberOfPlayers(playersNumber))
+            if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
             {
                 Filling();
                 Tournament();
