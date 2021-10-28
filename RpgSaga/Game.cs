@@ -113,9 +113,12 @@
 
         private bool ChoosingLogger(string loggerType)
         {
-            try
+            bool success = int.TryParse(loggerType, out int number);
+            string errorMessage;
+
+            if (success)
             {
-                LogType log = (LogType)int.Parse(loggerType);
+                LogType log = (LogType)number;
 
                 if (log == LogType.LogFile)
                 {
@@ -128,15 +131,17 @@
                 }
                 else
                 {
-                    string errorMessage = "Please, try again.(incorrect log type)";
+                    errorMessage = "Please, try again.(incorrect log type)";
                     _errorMessages.Add(errorMessage);
 
                     return false;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                _errorMessages.Add(ex.Message);
+                errorMessage = "Please, try again.(log type was not a number)";
+                _errorMessages.Add(errorMessage);
+
                 return false;
             }
 
@@ -145,26 +150,29 @@
 
         private bool ChoosingNumberOfPlayers(string playersNumber)
         {
-            try
-            {
-                int playerNumbers = int.Parse(playersNumber);
+            bool success = int.TryParse(playersNumber, out int number);
+            string errorMessage;
 
-                if (playerNumbers > 0 && playerNumbers % 2 == 0)
+            if (success)
+            {
+                if (number > 0 && number % 2 == 0)
                 {
-                    _numberOfPlayers = playerNumbers;
+                    _numberOfPlayers = number;
                 }
                 else
                 {
                     _numberOfPlayers = 0;
-                    string errorMessage = "Please, try again.(incorrect players number)";
+                    errorMessage = "Please, try again.(incorrect players number)";
                     _errorMessages.Add(errorMessage);
 
                     return false;
                 }
             }
-            catch (Exception ex)
+            else
             {
-                _errorMessages.Add(ex.Message);
+                errorMessage = "Please, try again.(players number was not a number)";
+                _errorMessages.Add(errorMessage);
+
                 return false;
             }
 
