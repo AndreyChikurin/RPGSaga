@@ -22,7 +22,7 @@
 
             mage1.Skills[0].SkillAction(mage1, mage2);
 
-            Assert.Equal(currentEffect[0], mage2.Effects[0]);
+            Assert.Equal(currentEffect[0].GetType(), mage2.Effects[0].GetType());
         }
     }
 }
