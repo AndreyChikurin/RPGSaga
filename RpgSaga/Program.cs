@@ -25,8 +25,6 @@
                     {
                         Console.WriteLine(errorMessage);
                     }
-
-                    game.ErrorMessages.Clear();
                 }
             }
         }

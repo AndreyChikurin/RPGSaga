@@ -21,20 +21,28 @@
 
         private List<Player> _players;
 
+        private List<string> _errorMessages;
+
         public Game()
         {
-            ErrorMessages = new List<string>();
+            _errorMessages = new List<string>();
             GameHaveCompleted = false;
             _players = new List<Player>();
             _numberOfPlayerTypes = Assembly.GetAssembly(typeof(Player)).GetTypes().Where(type => type.IsSubclassOf(typeof(Player))).Count();
         }
 
-        public List<string> ErrorMessages { get; set; }
+        public IEnumerable<string> ErrorMessages
+        {
+            get { return _errorMessages; }
+            set { _errorMessages = value.ToList(); }
+        }
 
         public bool GameHaveCompleted { get; private set; }
 
         public void Start(string loggerType, string playersNumber)
         {
+            _errorMessages.Clear();
+
             if (ChoosingLogger(loggerType) && ChoosingNumberOfPlayers(playersNumber))
             {
                 Filling();
@@ -121,14 +129,14 @@
                 else
                 {
                     string errorMessage = "Please, try again.(incorrect log type)";
-                    ErrorMessages.Add(errorMessage);
+                    _errorMessages.Add(errorMessage);
 
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessages.Add(ex.Message);
+                _errorMessages.Add(ex.Message);
                 return false;
             }
 
@@ -149,14 +157,14 @@
                 {
                     _numberOfPlayers = 0;
                     string errorMessage = "Please, try again.(incorrect players number)";
-                    ErrorMessages.Add(errorMessage);
+                    _errorMessages.Add(errorMessage);
 
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                ErrorMessages.Add(ex.Message);
+                _errorMessages.Add(ex.Message);
                 return false;
             }
 
