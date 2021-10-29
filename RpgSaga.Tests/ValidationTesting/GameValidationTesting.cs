@@ -5,31 +5,21 @@
 
     public class GameValidationTesting
     {
-        [Fact]
-        public void GameValidationTest()
+        [Theory]
+        [InlineData("0", "6", null)]
+        [InlineData("0", "5", "Incorrect players number")]
+        [InlineData("2", "6", "Incorrect log type")]
+        [InlineData("as", "as", "Log type was not a numberPlayers number was not a number")]
+        [InlineData("2", "5", "Incorrect log typeIncorrect players number")]
+        public void GameValidationTest1(string logger, string playersNumber, string errorMessage)
         {
             var game = new Game();
-            game.Start("0", "2");
+            game.Start(logger, playersNumber);
+            string result = null;
 
-            Assert.True(game.ErrorMessages.ToList().Count() == 0);
+            game.ErrorMessages.ToList().ForEach(message => result += message);
 
-            game.Start("test", "test");
-
-            Assert.True(game.ErrorMessages.ToList()[0] == "Log type was not a number");
-            Assert.True(game.ErrorMessages.ToList()[1] == "Players number was not a number");
-
-            game.Start("5", "5");
-
-            Assert.True(game.ErrorMessages.ToList()[0] == "Incorrect log type");
-            Assert.True(game.ErrorMessages.ToList()[1] == "incorrect players number");
-
-            game.Start("0", "5");
-
-            Assert.True(game.ErrorMessages.ToList()[0] == "incorrect players number");
-
-            game.Start("2", "6");
-
-            Assert.True(game.ErrorMessages.ToList()[0] == "Incorrect log type");
+            Assert.Equal(errorMessage, result);
         }
     }
 }
