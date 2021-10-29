@@ -160,7 +160,7 @@
             }
 
             _numberOfPlayers = 0;
-            errorMessage = "incorrect players number";
+            errorMessage = "Incorrect players number";
             _errorMessages.Add(errorMessage);
 
             return false;
