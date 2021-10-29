@@ -24,6 +24,15 @@
 
             Assert.Equal(durationBefore, durationAfrer);
             Assert.Equal(mage1.MaxHp - 2, mage1.Hp);
+
+            durationBefore = mage1.Effects[0].Duration;
+
+            mage1.Effects[0].EffectAction(mage1);
+
+            durationAfrer = mage1.Effects[0].Duration;
+
+            Assert.Equal(durationBefore, durationAfrer);
+            Assert.Equal(mage1.MaxHp - 4, mage1.Hp);
         }
     }
 }
