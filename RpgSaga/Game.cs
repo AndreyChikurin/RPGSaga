@@ -44,27 +44,40 @@
 
             if (ChoosingLogger(loggerType))
             {
-                if (PlayerCreatingFromJson(_logger, generationOfPlayers))
-                {
-                    Tournament();
-                    CurrentWinner();
-                    GameHaveCompleted = true;
-                }
-                else if (ChoosingNumberOfPlayers(playersNumber))
-                {
-                    Filling();
-                    Tournament();
-                    CurrentWinner();
-                    GameHaveCompleted = true;
-                }
+                PlayersGeneration(playersNumber, generationOfPlayers);
             }
-            else if (playersNumber == null)
+            else
+            {
+                PlayersGenerationErrors(playersNumber, generationOfPlayers);
+            }
+        }
+
+        private void PlayersGenerationErrors(string playersNumber, string generationOfPlayers)
+        {
+            if (playersNumber == null)
             {
                 PlayerCreatingFromJson(_logger, generationOfPlayers);
             }
             else
             {
                 ChoosingNumberOfPlayers(playersNumber);
+            }
+        }
+
+        private void PlayersGeneration(string playersNumber, string generationOfPlayers)
+        {
+            if (PlayerCreatingFromJson(_logger, generationOfPlayers))
+            {
+                Tournament();
+                CurrentWinner();
+                GameHaveCompleted = true;
+            }
+            else if (ChoosingNumberOfPlayers(playersNumber))
+            {
+                Filling();
+                Tournament();
+                CurrentWinner();
+                GameHaveCompleted = true;
             }
         }
 
