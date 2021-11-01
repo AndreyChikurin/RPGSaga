@@ -2,9 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Newtonsoft.Json;
     using RpgSaga.Consts;
+    using RpgSaga.Data;
     using RpgSaga.Interfaces;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
@@ -35,11 +38,17 @@
 
         public bool GameHaveCompleted { get; private set; }
 
-        public void Start(string loggerType, string playersNumber)
+        public void Start(string loggerType, string playersNumber, string generationOfPlayers)
         {
             _errorMessages.Clear();
 
-            if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
+            if (ChoosingLogger(loggerType) & PlayerCreatingFromJson(_logger, generationOfPlayers))
+            {
+                Tournament();
+                CurrentWinner();
+                GameHaveCompleted = true;
+            }
+            else if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
             {
                 Filling();
                 Tournament();
@@ -164,6 +173,105 @@
             _errorMessages.Add(errorMessage);
 
             return false;
+        }
+
+        private bool PlayerCreatingFromJson(ILogger logger, string generationOfPlayers)
+        {
+            bool success = int.TryParse(generationOfPlayers, out int number);
+            string errorMessage;
+
+            if (!success)
+            {
+                errorMessage = "Log type was not a number";
+                _errorMessages.Add(errorMessage);
+
+                return false;
+            }
+
+            GenerationOfPlayers generation = (GenerationOfPlayers)number;
+
+            Factory factory = new Factory(logger);
+            List<PlayerDto> playerModels = DeserializePlayerFromJson();
+
+            if (generation == GenerationOfPlayers.ByFile)
+            {
+                if (playerModels is null)
+                {
+                    errorMessage = "Player creation from JSON file is failed";
+                    _errorMessages.Add(errorMessage);
+                    return false;
+                }
+
+                foreach (PlayerDto model in playerModels)
+                {
+                    var player = factory.CreatePlayer(model);
+                    if (!(player is null))
+                    {
+                        _players.Add(player);
+                    }
+                }
+
+                return true;
+            }
+
+            if (generation != GenerationOfPlayers.ByRandom)
+            {
+                errorMessage = "Incorrect generation of players number";
+                _errorMessages.Add(errorMessage);
+            }
+
+            return false;
+        }
+
+        private List<PlayerDto> DeserializePlayerFromJson()
+        {
+            string path = @"JsonForPlayer\Serialization.json";
+
+            string data = File.ReadAllText(path);
+
+            string errorMessage;
+
+            List<PlayerDto> models = new List<PlayerDto>();
+            try
+            {
+                models = JsonConvert.DeserializeObject<List<PlayerDto>>(data);
+                if (models.Count < 2 || models.Count % 2 != 0)
+                {
+                    throw new Exception();
+                }
+
+                _numberOfPlayers = models.Count;
+
+                for (int i = 0; i < models.Count; i++)
+                {
+                    if (models[i].MaxHp < 1
+                        || models[i].Strenght < 1
+                        || string.IsNullOrWhiteSpace(models[i].Name))
+                    {
+                        throw new Exception();
+                    }
+                }
+            }
+            catch (JsonReaderException)
+            {
+                errorMessage = "Error reading Json";
+                _errorMessages.Add(errorMessage);
+                return null;
+            }
+            catch (JsonSerializationException)
+            {
+                errorMessage = "Json is incorrect, check data";
+                _errorMessages.Add(errorMessage);
+                return null;
+            }
+            catch (Exception)
+            {
+                errorMessage = "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0";
+                _errorMessages.Add(errorMessage);
+                return null;
+            }
+
+            return models;
         }
     }
 }

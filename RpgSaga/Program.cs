@@ -11,13 +11,21 @@
 
             while (!game.GameHaveCompleted)
             {
+                string playersNumber = null;
+
                 Console.Write("Enter 1 to write logs to a file or 0 to write logs to the console: ");
                 string loggerType = Console.ReadLine();
 
-                Console.Write("Please select an even number of players: ");
-                string playersNumber = Console.ReadLine();
+                Console.Write("Enter 0 to load players from a Json file or enter 1 for random generation of players: ");
+                string generationOfPlayers = Console.ReadLine();
 
-                game.Start(loggerType, playersNumber);
+                if (generationOfPlayers == "1")
+                {
+                    Console.Write("Please select an even number of players: ");
+                    playersNumber = Console.ReadLine();
+                }
+
+                game.Start(loggerType, playersNumber, generationOfPlayers);
 
                 foreach (string errorMessage in game.ErrorMessages)
                 {
