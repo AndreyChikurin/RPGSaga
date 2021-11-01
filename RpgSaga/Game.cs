@@ -241,7 +241,9 @@
 
         private List<PlayerDto> DeserializePlayerFromJson()
         {
-            string path = @"JsonForPlayer\Serialization.json";
+            string directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
+
+            string path = @$"{directory}\JsonForPlayer\Serialization.json";
 
             string data = File.ReadAllText(path);
 

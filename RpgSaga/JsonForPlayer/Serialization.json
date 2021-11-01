@@ -1,0 +1,26 @@
+[
+  {
+    "class": "Mage",
+    "name": "Oruma",
+    "strenght": 6,
+    "maxHp": 70
+  },
+  {
+    "class": "Warrior",
+    "name": "Hrago",
+    "strenght": 7,
+    "maxHp": 65
+  },
+  {
+    "class": "Hunter",
+    "name": "Polemid",
+    "strenght": 5,
+    "maxHp": 75
+  },
+  {
+    "class": "Mage",
+    "name": "Hromosomus",
+    "strenght": 6,
+    "maxHp": 70
+  }
+]
