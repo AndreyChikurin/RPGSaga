@@ -7,6 +7,8 @@
 
     public abstract class Player
     {
+        private int _hp;
+
         public Player(int strength, int maxHp, string name, List<ISkill> skills)
         {
             Strength = strength;
@@ -20,7 +22,11 @@
 
         public int Strength { get; set; }
 
-        public int Hp { get; set; }
+        public int Hp
+        {
+            get => _hp;
+            set { _hp = value > 0 ? value : 0; }
+        }
 
         public int MaxHp { get; private set; }
 
