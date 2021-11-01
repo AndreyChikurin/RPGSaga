@@ -243,7 +243,7 @@
         {
             string directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
 
-            string path = @$"{directory}\JsonForPlayer\Serialization.json";
+            string path = @$"{directory}/JsonForPlayer/Serialization.json";
 
             string data = File.ReadAllText(path);
 
