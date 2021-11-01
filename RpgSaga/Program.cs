@@ -1,7 +1,6 @@
 ﻿namespace CourseApp
 {
     using System;
-    using System.IO;
     using RpgSaga;
 
     public class Program
