@@ -42,18 +42,29 @@
         {
             _errorMessages.Clear();
 
-            if (ChoosingLogger(loggerType) & PlayerCreatingFromJson(_logger, generationOfPlayers))
+            if (ChoosingLogger(loggerType))
             {
-                Tournament();
-                CurrentWinner();
-                GameHaveCompleted = true;
+                if (PlayerCreatingFromJson(_logger, generationOfPlayers))
+                {
+                    Tournament();
+                    CurrentWinner();
+                    GameHaveCompleted = true;
+                }
+                else if (ChoosingNumberOfPlayers(playersNumber))
+                {
+                    Filling();
+                    Tournament();
+                    CurrentWinner();
+                    GameHaveCompleted = true;
+                }
             }
-            else if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
+            else if (playersNumber == null)
             {
-                Filling();
-                Tournament();
-                CurrentWinner();
-                GameHaveCompleted = true;
+                PlayerCreatingFromJson(_logger, generationOfPlayers);
+            }
+            else
+            {
+                ChoosingNumberOfPlayers(playersNumber);
             }
         }
 
@@ -151,6 +162,11 @@
 
         private bool ChoosingNumberOfPlayers(string playersNumber)
         {
+            if (playersNumber == null)
+            {
+                return false;
+            }
+
             bool success = int.TryParse(playersNumber, out int number);
             string errorMessage;
 
@@ -182,7 +198,7 @@
 
             if (!success)
             {
-                errorMessage = "Log type was not a number";
+                errorMessage = "GenerationOfPlayers was not a number";
                 _errorMessages.Add(errorMessage);
 
                 return false;
