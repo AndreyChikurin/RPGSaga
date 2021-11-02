@@ -2,17 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Newtonsoft.Json;
     using RpgSaga.Consts;
     using RpgSaga.Data;
-    using RpgSaga.Interfaces;
+    using RpgSaga.Deserialize;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
     using RpgSaga.Rounds;
-    using RpgSaga.Skills;
 
     public class Game
     {
@@ -38,25 +35,25 @@
 
         public bool GameHaveCompleted { get; private set; }
 
-        public void Start(string loggerType, string playersNumber, string generationOfPlayers)
+        public void Start(string loggerType, string playersNumber, string playersGenerationType)
         {
             _errorMessages.Clear();
 
             if (ChoosingLogger(loggerType))
             {
-                PlayersGeneration(playersNumber, generationOfPlayers);
+                PlayersGeneration(playersNumber, playersGenerationType);
             }
             else
             {
-                PlayersGenerationErrors(playersNumber, generationOfPlayers);
+                PlayersGenerationErrors(playersNumber, playersGenerationType);
             }
         }
 
-        private void PlayersGenerationErrors(string playersNumber, string generationOfPlayers)
+        private void PlayersGenerationErrors(string playersNumber, string playersGenerationType)
         {
             if (playersNumber == null)
             {
-                PlayerCreatingFromJson(_logger, generationOfPlayers);
+                PlayerCreatingFromJson(_logger, playersGenerationType);
             }
             else
             {
@@ -64,17 +61,18 @@
             }
         }
 
-        private void PlayersGeneration(string playersNumber, string generationOfPlayers)
+        private void PlayersGeneration(string playersNumber, string playersGenerationType)
         {
-            if (PlayerCreatingFromJson(_logger, generationOfPlayers))
+            if (!PlayerCreatingFromJson(_logger, playersGenerationType))
             {
-                Tournament();
-                CurrentWinner();
-                GameHaveCompleted = true;
+                if (ChoosingNumberOfPlayers(playersNumber))
+                {
+                    Filling();
+                }
             }
-            else if (ChoosingNumberOfPlayers(playersNumber))
+
+            if (_players.Count > 1)
             {
-                Filling();
                 Tournament();
                 CurrentWinner();
                 GameHaveCompleted = true;
@@ -85,42 +83,13 @@
         {
             Random random = new Random();
 
+            PlayersFactory playersFactory = new PlayersFactory(_logger);
+
             _players = new List<Player>(_numberOfPlayers);
 
             for (int i = 0; i < _numberOfPlayers; i++)
             {
-                switch (random.Next(0, _numberOfPlayerTypes))
-                {
-                    case 0:
-                        {
-                            _players.Add(new Hunter(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Hunter[random.Next(0, PlayerNames.Hunter.Length)] + $"{i + 1}",
-                                new List<ISkill> { new FireArrows(_logger) }));
-                            break;
-                        }
-
-                    case 1:
-                        {
-                            _players.Add(new Warrior(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Warrior[random.Next(0, PlayerNames.Warrior.Length)] + $"{i + 1}",
-                                new List<ISkill> { new MortalStrike(_logger) }));
-                            break;
-                        }
-
-                    case 2:
-                        {
-                            _players.Add(new Mage(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Mage[random.Next(0, PlayerNames.Mage.Length)] + $"{i + 1}",
-                                new List<ISkill> { new Freezing(_logger) }));
-                            break;
-                        }
-                }
+                _players.Add(playersFactory.CreatePlayer(_numberOfPlayerTypes));
 
                 Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
             }
@@ -219,8 +188,8 @@
 
             GenerationOfPlayers generation = (GenerationOfPlayers)number;
 
-            Factory factory = new Factory(logger);
-            List<PlayerDto> playerModels = DeserializePlayerFromJson();
+            PlayersFactory factory = new PlayersFactory(logger);
+            List<PlayerDto> playerModels = new DeserializePlayer().DeserializePlayerFromJson(_errorMessages);
 
             if (generation == GenerationOfPlayers.ByFile)
             {
@@ -250,59 +219,6 @@
             }
 
             return false;
-        }
-
-        private List<PlayerDto> DeserializePlayerFromJson()
-        {
-            string directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
-
-            string path = @$"{directory}/JsonForPlayer/Players.json";
-
-            string data = File.ReadAllText(path);
-
-            string errorMessage;
-
-            List<PlayerDto> models = new List<PlayerDto>();
-            try
-            {
-                models = JsonConvert.DeserializeObject<List<PlayerDto>>(data);
-                if (models.Count < 2 || models.Count % 2 != 0)
-                {
-                    throw new Exception();
-                }
-
-                _numberOfPlayers = models.Count;
-
-                for (int i = 0; i < models.Count; i++)
-                {
-                    if (models[i].MaxHp < 1
-                        || models[i].Strenght < 1
-                        || string.IsNullOrWhiteSpace(models[i].Name))
-                    {
-                        throw new Exception();
-                    }
-                }
-            }
-            catch (JsonReaderException)
-            {
-                errorMessage = "Error reading Json";
-                _errorMessages.Add(errorMessage);
-                return null;
-            }
-            catch (JsonSerializationException)
-            {
-                errorMessage = "Json is incorrect, check data";
-                _errorMessages.Add(errorMessage);
-                return null;
-            }
-            catch (Exception)
-            {
-                errorMessage = "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0";
-                _errorMessages.Add(errorMessage);
-                return null;
-            }
-
-            return models;
         }
     }
 }

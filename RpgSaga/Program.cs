@@ -17,15 +17,15 @@
                 string loggerType = Console.ReadLine();
 
                 Console.Write("Enter 0 to load players from a Json file or enter 1 for random generation of players: ");
-                string generationOfPlayers = Console.ReadLine();
+                string playersGenerationType = Console.ReadLine();
 
-                if (generationOfPlayers == "1")
+                if (playersGenerationType == "1")
                 {
                     Console.Write("Please select an even number of players: ");
                     playersNumber = Console.ReadLine();
                 }
 
-                game.Start(loggerType, playersNumber, generationOfPlayers);
+                game.Start(loggerType, playersNumber, playersGenerationType);
 
                 foreach (string errorMessage in game.ErrorMessages)
                 {
