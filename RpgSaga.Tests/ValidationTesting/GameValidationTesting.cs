@@ -1,6 +1,9 @@
 ﻿namespace RpgSaga.Tests.ValidationTesting
 {
+    using System;
+    using System.IO;
     using System.Linq;
+    using System.Text;
     using RpgSaga.Deserialize;
     using Xunit;
 
@@ -29,16 +32,36 @@
         }
 
         [Theory]
-        [InlineData("", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0")]
-        [InlineData(null, "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0")]
-        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70},{\"class\": \"Warrior\",\"name\": \"Hrago\",\"strenght\": 7,\"maxHp\": 65}]", "")]
-        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70},{\"class\": \"Warrior\",\"name\": \"Hrago\",\"strenght\": 7,\"maxHp\": -5}]", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0")]
-        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70}]", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0")]
-        [InlineData("{}", "Json is incorrect, check data")]
+        [InlineData("", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0Player creation from JSON file is failed")]
+        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70},{\"class\": \"Warrior\",\"name\": \"Hrago\",\"strenght\": 7,\"maxHp\": 65}]", null)]
+        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70},{\"class\": \"Warrior\",\"name\": \"Hrago\",\"strenght\": 7,\"maxHp\": -5}]", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0Player creation from JSON file is failed")]
+        [InlineData("[{\"class\": \"Mage\",\"name\": \"Oruma\",\"strenght\": 6,\"maxHp\": 70}]", "Data is incorrect format. Model count must be great or equal 2. Health and strenght must be > 0Player creation from JSON file is failed")]
+        [InlineData("{}", "Json is incorrect, check dataPlayer creation from JSON file is failed")]
         public void GameValidationJsonTest(string jsonToString, string errorMessage)
         {
-            var deserializePlayer = new DeserializePlayer();
-            string result = deserializePlayer.DeserializePlayerFromJsonTesting(jsonToString);
+            string directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName;
+
+            string path = @$"{directory}/JsonForPlayer/Players.json";
+
+            string data = File.ReadAllText(path);
+
+            using (FileStream fs = File.Create(path, 1024))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(jsonToString);
+                fs.Write(info);
+            }
+
+            var game = new Game();
+            game.Start("0", null, "0");
+            string result = null;
+
+            game.ErrorMessages.ToList().ForEach(message => result += message);
+
+            using (FileStream fs = File.Create(path, 1024))
+            {
+                byte[] info = new UTF8Encoding(true).GetBytes(data);
+                fs.Write(info);
+            }
 
             Assert.Equal(errorMessage, result);
         }
