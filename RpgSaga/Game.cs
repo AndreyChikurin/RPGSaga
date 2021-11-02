@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using RpgSaga.Consts;
@@ -38,6 +39,7 @@
         public void Start(string loggerType, string playersNumber, string playersGenerationType)
         {
             _errorMessages.Clear();
+            _players.Clear();
 
             if (ChoosingLogger(loggerType))
             {
@@ -45,11 +47,11 @@
             }
             else
             {
-                PlayersGenerationErrors(playersNumber, playersGenerationType);
+                ValidateInputParameters(playersNumber, playersGenerationType);
             }
         }
 
-        private void PlayersGenerationErrors(string playersNumber, string playersGenerationType)
+        private void ValidateInputParameters(string playersNumber, string playersGenerationType)
         {
             if (playersNumber == null)
             {
@@ -90,8 +92,6 @@
             for (int i = 0; i < _numberOfPlayers; i++)
             {
                 _players.Add(playersFactory.CreatePlayer((PlayerClasses)random.Next(0, _numberOfPlayerTypes)));
-
-                Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
             }
         }
 
@@ -189,10 +189,11 @@
             GenerationOfPlayers generation = (GenerationOfPlayers)number;
 
             PlayersFactory factory = new PlayersFactory(logger);
-            List<PlayerDto> playerModels = new DeserializePlayer().DeserializePlayerFromJson(_errorMessages);
 
             if (generation == GenerationOfPlayers.ByFile)
             {
+                List<PlayerDto> playerModels = new DeserializePlayer().DeserializePlayerFromJson(_errorMessages);
+
                 if (playerModels is null)
                 {
                     errorMessage = "Player creation from JSON file is failed";
