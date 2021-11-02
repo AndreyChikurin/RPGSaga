@@ -81,13 +81,15 @@
 
         private void Filling()
         {
+            Random random = new Random();
+
             PlayersFactory playersFactory = new PlayersFactory(_logger);
 
             _players = new List<Player>(_numberOfPlayers);
 
             for (int i = 0; i < _numberOfPlayers; i++)
             {
-                _players.Add(playersFactory.CreatePlayer(_numberOfPlayerTypes));
+                _players.Add(playersFactory.CreatePlayer((PlayerClasses)random.Next(0, _numberOfPlayerTypes)));
 
                 Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
             }

@@ -45,11 +45,11 @@
             }
         }
 
-        public Player CreatePlayer(int numberOfPlayersTypes)
+        public Player CreatePlayer(PlayerClasses playerClass)
         {
             Random random = new Random();
 
-            switch ((PlayerClasses)random.Next(0, numberOfPlayersTypes))
+            switch (playerClass)
             {
                 case PlayerClasses.Hunter:
                     {
