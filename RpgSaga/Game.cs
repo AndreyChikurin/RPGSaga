@@ -2,14 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Reflection;
     using RpgSaga.Consts;
-    using RpgSaga.Interfaces;
+    using RpgSaga.Data;
+    using RpgSaga.Deserialize;
     using RpgSaga.Loggers;
     using RpgSaga.Players;
     using RpgSaga.Rounds;
-    using RpgSaga.Skills;
 
     public class Game
     {
@@ -35,13 +36,45 @@
 
         public bool GameHaveCompleted { get; private set; }
 
-        public void Start(string loggerType, string playersNumber)
+        public void Start(string loggerType, string playersNumber, string playersGenerationType)
         {
             _errorMessages.Clear();
+            _players.Clear();
 
-            if (ChoosingLogger(loggerType) & ChoosingNumberOfPlayers(playersNumber))
+            if (ChoosingLogger(loggerType))
             {
-                Filling();
+                PlayersGeneration(playersNumber, playersGenerationType);
+            }
+            else
+            {
+                ValidateInputParameters(playersNumber, playersGenerationType);
+            }
+        }
+
+        private void ValidateInputParameters(string playersNumber, string playersGenerationType)
+        {
+            if (playersNumber == null)
+            {
+                PlayerCreatingFromJson(_logger, playersGenerationType);
+            }
+            else
+            {
+                ChoosingNumberOfPlayers(playersNumber);
+            }
+        }
+
+        private void PlayersGeneration(string playersNumber, string playersGenerationType)
+        {
+            if (!PlayerCreatingFromJson(_logger, playersGenerationType))
+            {
+                if (ChoosingNumberOfPlayers(playersNumber))
+                {
+                    Filling();
+                }
+            }
+
+            if (_players.Count > 1)
+            {
                 Tournament();
                 CurrentWinner();
                 GameHaveCompleted = true;
@@ -52,44 +85,13 @@
         {
             Random random = new Random();
 
+            PlayersFactory playersFactory = new PlayersFactory(_logger);
+
             _players = new List<Player>(_numberOfPlayers);
 
             for (int i = 0; i < _numberOfPlayers; i++)
             {
-                switch (random.Next(0, _numberOfPlayerTypes))
-                {
-                    case 0:
-                        {
-                            _players.Add(new Hunter(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Hunter[random.Next(0, PlayerNames.Hunter.Length)] + $"{i + 1}",
-                                new List<ISkill> { new FireArrows(_logger) }));
-                            break;
-                        }
-
-                    case 1:
-                        {
-                            _players.Add(new Warrior(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Warrior[random.Next(0, PlayerNames.Warrior.Length)] + $"{i + 1}",
-                                new List<ISkill> { new MortalStrike(_logger) }));
-                            break;
-                        }
-
-                    case 2:
-                        {
-                            _players.Add(new Mage(
-                                random.Next(4, 7),
-                                random.Next(50, 70),
-                                PlayerNames.Mage[random.Next(0, PlayerNames.Mage.Length)] + $"{i + 1}",
-                                new List<ISkill> { new Freezing(_logger) }));
-                            break;
-                        }
-                }
-
-                Console.WriteLine(_players[i].Name + " " + _players[i].Hp);
+                _players.Add(playersFactory.CreatePlayer((PlayerClasses)random.Next(0, _numberOfPlayerTypes)));
             }
         }
 
@@ -142,6 +144,11 @@
 
         private bool ChoosingNumberOfPlayers(string playersNumber)
         {
+            if (playersNumber == null)
+            {
+                return false;
+            }
+
             bool success = int.TryParse(playersNumber, out int number);
             string errorMessage;
 
@@ -162,6 +169,55 @@
             _numberOfPlayers = 0;
             errorMessage = "Incorrect players number";
             _errorMessages.Add(errorMessage);
+
+            return false;
+        }
+
+        private bool PlayerCreatingFromJson(ILogger logger, string generationOfPlayers)
+        {
+            bool success = int.TryParse(generationOfPlayers, out int number);
+            string errorMessage;
+
+            if (!success)
+            {
+                errorMessage = "GenerationOfPlayers was not a number";
+                _errorMessages.Add(errorMessage);
+
+                return false;
+            }
+
+            GenerationOfPlayers generation = (GenerationOfPlayers)number;
+
+            PlayersFactory factory = new PlayersFactory(logger);
+
+            if (generation == GenerationOfPlayers.ByFile)
+            {
+                List<PlayerDto> playerModels = new DeserializePlayer().DeserializePlayerFromJson(_errorMessages);
+
+                if (playerModels is null)
+                {
+                    errorMessage = "Player creation from JSON file is failed";
+                    _errorMessages.Add(errorMessage);
+                    return false;
+                }
+
+                foreach (PlayerDto model in playerModels)
+                {
+                    var player = factory.CreatePlayer(model);
+                    if (!(player is null))
+                    {
+                        _players.Add(player);
+                    }
+                }
+
+                return true;
+            }
+
+            if (generation != GenerationOfPlayers.ByRandom)
+            {
+                errorMessage = "Incorrect generation of players number";
+                _errorMessages.Add(errorMessage);
+            }
 
             return false;
         }
