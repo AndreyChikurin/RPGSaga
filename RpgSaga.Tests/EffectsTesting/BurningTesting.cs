@@ -1,10 +1,10 @@
-﻿namespace RpgSaga.Tests.EffectsTesting
+﻿namespace RpgSagaLib.Tests.EffectsTesting
 {
     using System.Collections.Generic;
-    using RpgSaga.Effects;
-    using RpgSaga.Interfaces;
-    using RpgSaga.Loggers;
-    using RpgSaga.Players;
+    using RpgSagaLib.Effects;
+    using RpgSagaLib.Interfaces;
+    using RpgSagaLib.Loggers;
+    using RpgSagaLib.Players;
     using Xunit;
 
     public class BurningTesting

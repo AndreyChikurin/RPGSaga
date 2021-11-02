@@ -13,10 +13,6 @@
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="all" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\RpgSaga\RpgSaga.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <CodeAnalysisRuleSet>../_stylecop/stylecop.ruleset</CodeAnalysisRuleSet> 
     <GenerateFullPaths>true</GenerateFullPaths>
@@ -24,6 +20,10 @@
 
   <ItemGroup>
     <AdditionalFiles Include="../_stylecop/stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../RpgSagaLib/RpgSagaLib.csproj" />
   </ItemGroup>
 
 </Project>

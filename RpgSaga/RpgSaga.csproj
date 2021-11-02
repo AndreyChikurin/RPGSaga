@@ -20,4 +20,8 @@
     <AdditionalFiles Include="../_stylecop/stylecop.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RpgSagaLib\RpgSagaLib.csproj" />
+  </ItemGroup>
+
 </Project>

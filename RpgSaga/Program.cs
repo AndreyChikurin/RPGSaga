@@ -1,7 +1,7 @@
 ﻿namespace CourseApp
 {
     using System;
-    using RpgSaga;
+    using RpgSagaLib;
 
     public class Program
     {

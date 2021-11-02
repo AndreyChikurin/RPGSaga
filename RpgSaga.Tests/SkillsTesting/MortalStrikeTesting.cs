@@ -1,11 +1,11 @@
-﻿namespace RpgSaga.Tests.SkillsTesting
+﻿namespace RpgSagaLib.Tests.SkillsTesting
 {
     using System;
     using System.Collections.Generic;
-    using RpgSaga.Interfaces;
-    using RpgSaga.Loggers;
-    using RpgSaga.Players;
-    using RpgSaga.Skills;
+    using RpgSagaLib.Interfaces;
+    using RpgSagaLib.Loggers;
+    using RpgSagaLib.Players;
+    using RpgSagaLib.Skills;
     using Xunit;
 
     public class MortalStrikeTesting

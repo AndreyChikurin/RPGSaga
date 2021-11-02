@@ -1,11 +1,11 @@
-﻿namespace RpgSaga.Tests.SkillsTesting
+﻿namespace RpgSagaLib.Tests.SkillsTesting
 {
     using System.Collections.Generic;
-    using RpgSaga.Effects;
-    using RpgSaga.Interfaces;
-    using RpgSaga.Loggers;
-    using RpgSaga.Players;
-    using RpgSaga.Skills;
+    using RpgSagaLib.Effects;
+    using RpgSagaLib.Interfaces;
+    using RpgSagaLib.Loggers;
+    using RpgSagaLib.Players;
+    using RpgSagaLib.Skills;
     using Xunit;
 
     public class FireArrowsTesting

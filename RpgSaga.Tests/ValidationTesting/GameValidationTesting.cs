@@ -1,4 +1,4 @@
-﻿namespace RpgSaga.Tests.ValidationTesting
+﻿namespace RpgSagaLib.Tests.ValidationTesting
 {
     using System;
     using System.IO;
