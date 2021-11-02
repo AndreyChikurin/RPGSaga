@@ -49,9 +49,9 @@
         {
             Random random = new Random();
 
-            switch (random.Next(0, numberOfPlayersTypes))
+            switch ((PlayerClasses)random.Next(0, numberOfPlayersTypes))
             {
-                case 0:
+                case PlayerClasses.Hunter:
                     {
                         return new Hunter(
                             random.Next(4, 7),
@@ -60,7 +60,7 @@
                             new List<ISkill> { new FireArrows(_logger) });
                     }
 
-                case 1:
+                case PlayerClasses.Warrior:
                     {
                         return new Warrior(
                             random.Next(4, 7),
@@ -69,7 +69,7 @@
                             new List<ISkill> { new MortalStrike(_logger) });
                     }
 
-                case 2:
+                case PlayerClasses.Mage:
                     {
                         return new Mage(
                             random.Next(4, 7),

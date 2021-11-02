@@ -81,8 +81,6 @@
 
         private void Filling()
         {
-            Random random = new Random();
-
             PlayersFactory playersFactory = new PlayersFactory(_logger);
 
             _players = new List<Player>(_numberOfPlayers);
